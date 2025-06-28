@@ -1,0 +1,29 @@
+{
+  "name": "marketplace",
+  "version": "0.0.1-dev",
+  "description": "Marketplace on golang and ts",
+  "main": "src/ts/index.ts",
+  "scripts": {
+    "test": "npm run dev",
+    "build": "babel src/ts --out-dir src/static/js --extensions \".ts,.tsx\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kuchmaa/marketplace.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kuchmaa/marketplace/issues"
+  },
+  "homepage": "https://github.com/kuchmaa/marketplace#readme",
+  "dependencies": {
+    "babel": "^5.8.38"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.27.2",
+    "@babel/core": "^7.27.7",
+    "@babel/preset-env": "^7.27.2",
+    "@babel/preset-typescript": "^7.27.1"
+  }
+}

@@ -1,1 +1,0 @@
-console.log("This is a static JavaScript file for the marketplace project.");

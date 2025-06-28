@@ -6,48 +6,67 @@ import (
 	"net/http"
 )
 
-type TAppLayout struct {
+type Layout interface {
+	HeaderTemplate(path string)
+	FooterTemplate(path string)
+	AppLayout(path string)
+	BodyTemplate(path string)
+	Execute(w http.ResponseWriter)
+}
+
+type AppLayout struct {
 	Title       string
 	Description string
 	appTemplate string
-	CSS         []string
-	JS          []string
+	CSS         map[string]string
+	JS          map[string]string
 	body        string
 	Header      string
 	Footer      string
+	Data        any
 }
 
-func NewAppPage() *TAppLayout {
-	return &TAppLayout{
+func NewAppPage() *AppLayout {
+	return &AppLayout{
 		Title:       "App Page",
 		Description: "This is the default app page description.",
 		appTemplate: "views/layouts/app.html",
 		body:        "views/pages/home.html",
 		Header:      "views/components/Header.html",
 		Footer:      "views/components/Footer.html",
-		CSS:         []string{"main.css"},
-		JS:          []string{"js.js"},
+		CSS: map[string]string{
+			"main": "main.css",
+		},
+		JS: map[string]string{
+			"index": "js/index.js",
+		},
+		Data: nil,
 	}
 }
 
-func (p *TAppLayout) HeaderTemplate(path string) {
+func (p *AppLayout) RemoveCSS(keys ...string) {
+	for _, key := range keys {
+		delete(p.CSS, key)
+	}
+}
+
+func (p *AppLayout) HeaderTemplate(path string) {
 	p.Header = "views/components/" + path
 }
 
-func (p *TAppLayout) FooterTemplate(path string) {
+func (p *AppLayout) FooterTemplate(path string) {
 	p.Footer = "views/components/" + path
 }
 
-func (p *TAppLayout) AppLayout(path string) {
-	p.appTemplate = "views/layout/" + path
+func (p *AppLayout) AppLayout(path string) {
+	p.appTemplate = "views/layouts/" + path
 }
 
-func (p *TAppLayout) BodyTemplate(path string) {
-	p.body = path
+func (p *AppLayout) BodyTemplate(path string) {
+	p.body = "views/pages/" + path
 }
 
-func (p *TAppLayout) Execute(w http.ResponseWriter) {
-	// Собираем список шаблонов
+func (p *AppLayout) Execute(w http.ResponseWriter) {
 	files := []string{p.appTemplate, p.body}
 	if p.Header != "" {
 		files = append(files, p.Header)
@@ -58,7 +77,7 @@ func (p *TAppLayout) Execute(w http.ResponseWriter) {
 
 	// Добавляем функцию dict
 	funcMap := template.FuncMap{
-		"props": func(values ...interface{}) (map[string]interface{}, error) {
+		"props": func(values ...interface{ any }) (map[string]interface{ any }, error) {
 			if len(values)%2 != 0 {
 				return nil, fmt.Errorf("dict requires an even number of arguments")
 			}

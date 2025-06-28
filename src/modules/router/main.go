@@ -5,13 +5,14 @@ import (
 	"strings"
 )
 
+type HTTPFunc func(http.ResponseWriter, *http.Request)
+
 type TRouter struct {
 	handlers map[string]func(http.ResponseWriter, *http.Request)
 	static   map[string]string
 	notFound func(http.ResponseWriter, *http.Request)
 }
 
-// Создание нового роутера
 func Router() *TRouter {
 	return &TRouter{
 		handlers: make(map[string]func(http.ResponseWriter, *http.Request)),
