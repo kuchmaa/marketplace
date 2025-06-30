@@ -1,6 +1,7 @@
 {{define "body"}}
 <h1>Welcome to the Home Page</h1>
 <p>This is the main content of the home page.</p>
+<p><strong>{{.Data.User}}</strong></p>
 {{template "button" (props "Text" "Click me")}}
 {{template "button" (props "Text" "Click me1")}}
 {{end}}

@@ -38,15 +38,9 @@ func NewAppPage() *AppLayout {
 			"main": "main.css",
 		},
 		JS: map[string]string{
-			"index": "js/index.js",
+			"index": "index.js",
 		},
 		Data: nil,
-	}
-}
-
-func (p *AppLayout) RemoveCSS(keys ...string) {
-	for _, key := range keys {
-		delete(p.CSS, key)
 	}
 }
 
